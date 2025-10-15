@@ -14,9 +14,9 @@ console.log(`
     4️⃣ ${underline('Two cards will be dealt to each of you in the begining')}.
 
     5️⃣ ${underline('both of your cards will be face revealed at once but the dealer will reveal only one of his card')}.
-       ${underline('The dealer reveals his card before you though')}.
+       ${underline('However, the dealer reveals his card before you')}.
 
-    6️⃣ ${underline('After revealing you card you will see your current card value, now you can decide to take a card(HIT) or not.')}
+    6️⃣ ${underline('After revealing your card you will see your current card value, now you can decide to take a card(HIT) or not.')}
 
     7️⃣ ${underline('Then the dealer reveals his 2nd card')}.
        ${underline("Now if his card's value is under 17, he is bound to take a card. Else he will have to stay with what he has")}.
@@ -29,13 +29,8 @@ console.clear();
 
 const POSSIBLE_CARDS_TO_DRAW = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
 const POSSIBLE_CARD_SYBMOLS = ['♠️', '♥️', '♣️', '♦️'];
-let dealerHand = 0;
-let playerHand = 0;
-let dealings = 0;
-let dealerCardNumber = 0;
-let playerCardNumber = 0;
 
-function dealerCardDealing(round) {
+function dealerCardDealing(round, dealerHand, dealerCardNumber) {
   dealerCardNumber += 1;
   const CurrentDealerCard = POSSIBLE_CARDS_TO_DRAW[Math.floor(Math.random() * 13)];
   const currentCardSymbol = POSSIBLE_CARD_SYBMOLS[Math.floor(Math.random() * 4)];
@@ -64,13 +59,13 @@ function dealerCardDealing(round) {
 
   if (dealerHand < 17) {
     console.log(`\n${underline('dealer:')} ${dealerHand}`);
-    return dealerCardDealing();
+    return dealerCardDealing(3, dealerHand, dealerCardNumber);
   }
 
   return dealerHand;
 }
 
-function playerCardDealing(dealings) {
+function playerCardDealing(dealings, playerHand, playerCardNumber, dealerHandAfterFirstReveal) {
   playerCardNumber += 1;
   dealings += 1;
   const CurrentPlayerCard = POSSIBLE_CARDS_TO_DRAW[Math.floor(Math.random() * 13)];
@@ -90,7 +85,7 @@ function playerCardDealing(dealings) {
   console.log(`\n${underline('player:')} ${playerHand}`);
 
   if (dealings === 1) {
-    return playerCardDealing(dealings);
+    return playerCardDealing(dealings, playerHand, playerCardNumber, dealerHandAfterFirstReveal);
   }
 
   if (playerHand > 21) {
@@ -101,31 +96,44 @@ function playerCardDealing(dealings) {
   const ifToHit = confirm('\nDo you want hit?');
   if (ifToHit) {
     console.clear();
-    return playerCardDealing(dealings);
+    return playerCardDealing(dealings, playerHand, playerCardNumber, dealerHandAfterFirstReveal);
   }
   return playerHand;
 }
 
 function play() {
-  console.log(`\n ${underline('dealer:')} ${dealerCardDealing(1)}`);
-  const playerHandAtEnd = playerCardDealing(dealings);
+  let dealerHand = 0;
+  let playerHand = 0;
+  let dealings = 0;
+  let dealerCardNumber = 0;
+  let playerCardNumber = 0;
+
+  const dealerHandAfterFirstReveal = dealerCardDealing(1, dealerHand, dealerCardNumber);
+  console.log(`\n ${underline('dealer:')} ${dealerHandAfterFirstReveal}`);
+
+  const playerHandAtEnd = playerCardDealing(dealings, playerHand, playerCardNumber, dealerHandAfterFirstReveal);
   if (playerHandAtEnd > 21) {
-    return endHandValues();
+    return endHandValues(playerHandAtEnd, dealerHandAfterFirstReveal);
   }
-  console.log(`\n ${underline('dealer:')} ${dealerCardDealing(2)}`);
+  const dealerHandAtEnd = dealerCardDealing(2, dealerHandAfterFirstReveal, dealerCardNumber);
+  console.log(`\n ${underline('dealer:')} ${dealerHandAtEnd}`);
   const loseMsg = `\n${bold(blink(bgRed('You lose!')))}`;
   const winMsg = `\n${bold(blink(bgGreen('You win!')))}`;
+  if (dealerHandAtEnd === playerHandAtEnd) {
+    console.log("It's a push! You both have same card value.");
+    return endHandValues(playerHandAtEnd, dealerHandAtEnd);
+  }
   const result = (dealerHand > playerHand && dealerHand < 22) ? loseMsg : winMsg;
   console.log(result);
-  return endHandValues();
+  return endHandValues(playerHandAtEnd, dealerHandAtEnd);
 }
-x
-play();
 
-function endHandValues() {
-  console.log(`\n${bgYellow('player at end:')} ${playerHand}`);
-  console.log(`\n${bgYellow('dealer at end:')} ${dealerHand}\n`);
+function endHandValues(playerHandAtEnd, dealerHandAtEnd) {
+  console.log(`\n${bgYellow('player at end:')} ${playerHandAtEnd}`);
+  console.log(`\n${bgYellow('dealer at end:')} ${dealerHandAtEnd}\n`);
 }
+
+play();
 
 function bold(text) {
   return "\x1B[1m" + text + "\x1B[0m";
