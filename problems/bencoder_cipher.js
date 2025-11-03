@@ -19,6 +19,10 @@ function listEncoder(data) {
   return `l${encodedList}e`;
 }
 
+function bencoderCipherDecoder(data) {
+  return parseInt(data.slice(1, data.length - 1));
+}
+
 function formatText(input, actualOutput, expectedOutput) {
   return `
   | Inputs  : ${input}
@@ -27,8 +31,8 @@ function formatText(input, actualOutput, expectedOutput) {
   -------`;
 }
 
-function testBencoderCipherEncoder(data, description, expectedOutput) {
-  const actualOutput = bencoderCipherEncoder(data);
+function testBencoderCipher(data, taskToDo, description, expectedOutput) {
+  const actualOutput = taskToDo === 'encode' ? bencoderCipherEncoder(data) : bencoderCipherDecoder(data);
   const isEqual = actualOutput === expectedOutput;
   const symbol = isEqual ? "✅" : "❌";
   const headline = `${symbol} ${description}`;
@@ -43,22 +47,37 @@ function testBencoderCipherEncoder(data, description, expectedOutput) {
   }
 }
 
-function main() {
+function testBencoderCipherEncoder() {
   console.log('\nBencoder cipher: encoding');
   console.log('-'.repeat('Bencoder cipher: encoding'.length), '\n');
 
-  testBencoderCipherEncoder(1, 'one digit integer', 'i1e');
-  testBencoderCipherEncoder(123, 'three digit integer', 'i123e');
-  testBencoderCipherEncoder(0, '0 as data', 'i0e');
-  testBencoderCipherEncoder(99999, 'five digit integer', 'i99999e');
-  testBencoderCipherEncoder('hi', 'string', '2:hi');
-  testBencoderCipherEncoder('hi hello', 'string with space', '8:hi hello');
-  testBencoderCipherEncoder('', 'empty string', '0:');
-  testBencoderCipherEncoder([1], 'array', 'li1ee');
-  testBencoderCipherEncoder([1, 2, 3], 'array with 3 elements', 'li1ei2ei3ee');
-  testBencoderCipherEncoder([], 'empty array', 'le');
-  testBencoderCipherEncoder([1, 'hello'], 'array with int and str', 'li1e5:helloe');
-  testBencoderCipherEncoder([1, 'hello', [1, 2]], 'array with different data types', 'li1e5:helloli1ei2eee');
+  testBencoderCipher(1, 'encode', 'one digit integer', 'i1e');
+  testBencoderCipher(123, 'encode', 'three digit integer', 'i123e');
+  testBencoderCipher(0, 'encode', '0 as data', 'i0e');
+  testBencoderCipher(99999, 'encode', 'five digit integer', 'i99999e');
+  testBencoderCipher('hi', 'encode', 'string', '2:hi');
+  testBencoderCipher('hi hello', 'encode', 'string with space', '8:hi hello');
+  testBencoderCipher('', 'encode', 'empty string', '0:');
+  testBencoderCipher([1], 'encode', 'array', 'li1ee');
+  testBencoderCipher([1, 2, 3], 'encode', 'array with 3 elements', 'li1ei2ei3ee');
+  testBencoderCipher([], 'encode', 'empty array', 'le');
+  testBencoderCipher([1, 'hello'], 'encode', 'array with int and str', 'li1e5:helloe');
+  testBencoderCipher([1, 'hello', [1, 2]], 'encode', 'array with different data types', 'li1e5:helloli1ei2eee');
+  testBencoderCipher([1, 'hello', [1, 2], [], [[1, 2], [1, 3]], [[], []], 1], 'encode', 'final boss', 'li1e5:helloli1ei2eelelli1ei2eeli1ei3eeelleleei1ee');
 }
 
-main();
+function testBencoderCipherDecoder() {
+  console.log('\nBencoder cipher: decoding');
+  console.log('-'.repeat('Bencoder cipher: decoding'.length), '\n');
+
+  testBencoderCipher('i1e', 'decode', 'one digit integer', 1);
+  testBencoderCipher('i123e', 'decode', 'three digit integer', 123);
+  testBencoderCipher('i0e', 'decode', 'decoding 0', 0);
+}
+
+function testAll() {
+  // testBencoderCipherEncoder();
+  testBencoderCipherDecoder();
+}
+
+testAll();
