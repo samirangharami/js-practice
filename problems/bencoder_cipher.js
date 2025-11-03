@@ -20,7 +20,12 @@ function listEncoder(data) {
 }
 
 function bencoderCipherDecoder(data) {
-  return parseInt(data.slice(1, data.length - 1));
+  switch (data[0]) {
+    case 'i':
+      return parseInt(data.slice(1, data.length - 1));
+    default:
+      return data.slice(2, data.length);
+  }
 }
 
 function formatText(input, actualOutput, expectedOutput) {
@@ -73,10 +78,13 @@ function testBencoderCipherDecoder() {
   testBencoderCipher('i1e', 'decode', 'one digit integer', 1);
   testBencoderCipher('i123e', 'decode', 'three digit integer', 123);
   testBencoderCipher('i0e', 'decode', 'decoding 0', 0);
+  testBencoderCipher('2:hi', 'decode', 'string', 'hi');
+  testBencoderCipher('8:hi hello', 'decode', 'string with spaces', 'hi hello');
+  testBencoderCipher('0:', 'decode', 'empty string', '');
 }
 
 function testAll() {
-  // testBencoderCipherEncoder();
+  testBencoderCipherEncoder();
   testBencoderCipherDecoder();
 }
 
