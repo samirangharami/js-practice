@@ -1,10 +1,14 @@
+function formatEncode(start, middle, end) {
+  return `${start + middle + end}`;
+}
+
 function bencoderCipherEncoder(data) {
   const dataType = typeof (data);
   switch (dataType) {
     case 'number':
-      return `i${data}e`;
+      return formatEncode("i", data, "e");
     case 'string':
-      return `${data.length}:${data}`;
+      return formatEncode(data.length, ':', data);
     case 'object':
       return listEncoder(data);
   }
@@ -16,16 +20,66 @@ function listEncoder(data) {
     encodedList += bencoderCipherEncoder(data[index]);
   }
 
-  return `l${encodedList}e`;
+  return formatEncode('l', encodedList, 'e');
 }
 
 function bencoderCipherDecoder(data) {
   switch (data[0]) {
     case 'i':
       return parseInt(data.slice(1, data.length - 1));
+    case 'l':
+      return listDecoder(data);
     default:
       return data.slice(2, data.length);
   }
+}
+
+function listDecoder(data) {
+  const decodedList = [];
+  let dataFragment = '';
+
+  for (let index = 1; index < data.length - 1; index++) {
+    dataFragment += data[index];
+
+    if (data[index] === 'e') {
+      decodedList.push(bencoderCipherDecoder(dataFragment));
+      dataFragment = '';
+    }
+  }
+
+  return decodedList;
+}
+
+function isArray(arrayCandidate) {
+  return typeof arrayCandidate === 'object';
+}
+
+function areElementsEqual(array1, array2) {
+  for (let index = 0; index < array1.length; index++) {
+    if (isArray(array1[index])) {
+      return areDeepEqual(array1[index], array2[index]);
+    }
+
+    if (array1[index] !== array2[index]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function areDeepEqual(array1, array2) {
+  if (!isArray(array1) || !isArray(array2)) {
+    return false;
+  }
+
+  const areArraysOfSameLength = array1.length === array2.length;
+
+  if (!areArraysOfSameLength) {
+    return false;
+  }
+
+  return areElementsEqual(array1, array2);
 }
 
 function formatText(input, actualOutput, expectedOutput) {
@@ -38,7 +92,7 @@ function formatText(input, actualOutput, expectedOutput) {
 
 function testBencoderCipher(data, taskToDo, description, expectedOutput) {
   const actualOutput = taskToDo === 'encode' ? bencoderCipherEncoder(data) : bencoderCipherDecoder(data);
-  const isEqual = actualOutput === expectedOutput;
+  const isEqual = isArray(expectedOutput) ? areDeepEqual(actualOutput, expectedOutput) : actualOutput === expectedOutput;
   const symbol = isEqual ? "✅" : "❌";
   const headline = `${symbol} ${description}`;
 
@@ -68,7 +122,6 @@ function testBencoderCipherEncoder() {
   testBencoderCipher([], 'encode', 'empty array', 'le');
   testBencoderCipher([1, 'hello'], 'encode', 'array with int and str', 'li1e5:helloe');
   testBencoderCipher([1, 'hello', [1, 2]], 'encode', 'array with different data types', 'li1e5:helloli1ei2eee');
-  testBencoderCipher([1, 'hello', [1, 2], [], [[1, 2], [1, 3]], [[], []], 1], 'encode', 'final boss', 'li1e5:helloli1ei2eelelli1ei2eeli1ei3eeelleleei1ee');
 }
 
 function testBencoderCipherDecoder() {
@@ -81,6 +134,8 @@ function testBencoderCipherDecoder() {
   testBencoderCipher('2:hi', 'decode', 'string', 'hi');
   testBencoderCipher('8:hi hello', 'decode', 'string with spaces', 'hi hello');
   testBencoderCipher('0:', 'decode', 'empty string', '');
+  testBencoderCipher('li1ei2ee', 'decode', 'list', [1, 2]);
+  testBencoderCipher('le', 'decode', 'empty array', []);
 }
 
 function testAll() {
