@@ -1,5 +1,5 @@
 function bencoderCipherEncoder(data) {
-  return 'i1e';
+  return `i${data}e`;
 }
 
 function formatText(input, actualOutput, expectedOutput) {
@@ -31,6 +31,7 @@ function main() {
   console.log('-'.repeat('Bencoder cipher: encoding'.length), '\n');
 
   testBencoderCipherEncoder(1, 'one digit integer', 'i1e');
+  testBencoderCipherEncoder(123, 'three digit integer', 'i123e');
 }
 
 main();
