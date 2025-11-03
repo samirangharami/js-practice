@@ -32,6 +32,8 @@ function main() {
 
   testBencoderCipherEncoder(1, 'one digit integer', 'i1e');
   testBencoderCipherEncoder(123, 'three digit integer', 'i123e');
+  testBencoderCipherEncoder(0, '0 as data', 'i0e');
+  testBencoderCipherEncoder(99999, 'five digit integer', 'i99999e');
 }
 
 main();
