@@ -1,12 +1,13 @@
 const screen = [];
-for (let i = 0; i <= 10; i++) {
-  screen.push(" ".repeat(15).split(""));
+for (let i = 0; i <= 20; i++) {
+  screen.push(" ".repeat(20).split(""));
 }
 
 const drawOnScreenVerticle = (screen, { x, y, text }) => {
   for (const char of text) {
     y = (screen.length + y) % screen.length;
-    screen[y][x] = char;
+    const colToAddChar = x + Math.round(Math.random());
+    screen[y][colToAddChar] = char;
     y = (y + 1) % screen.length;
   }
 };
@@ -34,11 +35,11 @@ const displayScreen = (screen) => {
 };
 
 const words = [
-  { text: "hello", x: 0, y: 2, dx: 1, move: "h" },
-  { text: "everyone", x: 4, y: 0, dx: 1, move: "v" },
-  { text: "world", x: 0, y: 4, dx: -1, move: "h" },
-  { text: "marquee", x: 6, y: 0, dx: -1, move: "v" },
-  { text: "verticle", x: 0, y: 8, dx: 1, move: "h" },
+  { text: "hello", x: 0, y: 0, dx: 1, move: "h" },
+  { text: "everyone", x: 10, y: 0, dx: 1, move: "v" },
+  { text: "world", x: 0, y: 10, dx: -1, move: "h" },
+  { text: "marquee", x: 20, y: 0, dx: -1, move: "v" },
+  { text: "verticle", x: 0, y: 20, dx: 1, move: "h" },
 ];
 
 setInterval(() => {
@@ -48,7 +49,7 @@ setInterval(() => {
   words.forEach((word) => {
     if (word.move === "h") {
       drawOnScreenHorizontal(screen, word);
-      word.x = (word.x + word.dx) % 15;
+      word.x = (word.x + word.dx) % screen[0].length;
     } else {
       drawOnScreenVerticle(screen, word);
       word.y = (word.y + word.dx) % screen.length;
