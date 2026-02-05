@@ -1,0 +1,46 @@
+{
+ "football leagues":[
+  { 
+    "front": "england",
+    "back": "premier league" 
+  },
+  { 
+    "front": "spain", 
+    "back": "la liga" 
+  },
+  { 
+    "front": "germany", 
+    "back": "bundesliga" 
+  },
+  { 
+    "front": "italy",
+    "back": "seria a" 
+    },
+  { 
+    "front": "france",
+    "back": "league 1" 
+    }
+],
+"capitals" : [
+  {
+    "front": "West Bengal",
+    "back": "kolkata"
+  },
+  {
+    "front": "Assam",
+    "back": "dispur"
+  },
+  {
+    "front": "Karnataka",
+    "back": "bengaluru"
+  },
+  {
+    "front": "Uttar Pradesh",
+    "back": "Lucknow"
+  },
+  {
+    "front": "Chattisgarh",
+    "back": "Raipur"
+  }
+]
+}
