@@ -11,7 +11,6 @@ const contentRegistry = {
   "/home": { path: "./pages/home.html", "Content-Type": "text/html" },
   "/man-utd": { path: "./pages/man-utd.html", "Content-Type": "text/html" },
   "/real": { path: "./pages/real-madrid.html", "Content-Type": "text/html" },
-  "/google": { path: "./pages/google.html", "Content-Type": "text/html" },
   "/notFound": { path: "./pages/notFound.html", "Content-Type": "text/html" },
 };
 
