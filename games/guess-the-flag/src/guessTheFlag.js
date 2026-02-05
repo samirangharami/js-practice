@@ -58,7 +58,7 @@ export const game = async (numberOfFlags) => {
     console.clear();
     const randomIndex = Math.round(Math.random() * (flags.length - 1));
     const flagDetails = flags.splice(randomIndex, 1)[0];
-    await printFlag(flagDetails.flag, randomIndex);
+    await printFlag(flagDetails.flag);
     if (await isCorrectAnswer(flagDetails, randomIndex)) {
       console.log("\n%cCorrect answer", "color: green");
       correctAnswers++;
@@ -70,7 +70,7 @@ export const game = async (numberOfFlags) => {
       );
     }
     prompt("\nEnter to continue ⏎");
-    clearFlag(randomIndex);
+    clearFlag();
   }
   console.clear();
   showResult(correctAnswers, numberOfFlags);
