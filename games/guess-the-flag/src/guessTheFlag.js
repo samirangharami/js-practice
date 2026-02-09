@@ -49,12 +49,10 @@ const isCorrectAnswer = async (flagDetails) => {
 export const game = async (numberOfFlags) => {
   const flags = getRandomFlags(numberOfFlags);
   let correctAnswers = 0;
-  while (flags.length > 0) {
+  for (const flagDetails of flags) {
     console.clear();
-    const randomIndex = Math.round(Math.random() * (flags.length - 1));
-    const flagDetails = flags.splice(randomIndex, 1)[0];
     await printFlag(flagDetails.flag);
-    if (await isCorrectAnswer(flagDetails, randomIndex)) {
+    if (await isCorrectAnswer(flagDetails)) {
       console.log("\n%cCorrect answer", "color: green");
       showCorrectAnswers(flagDetails.names);
       correctAnswers++;
