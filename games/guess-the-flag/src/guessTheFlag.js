@@ -1,6 +1,7 @@
 import { input } from "npm:@inquirer/prompts";
 import { levenshteinDistance } from "jsr:@std/text/levenshtein-distance";
 import { clearFlag, printFlag } from "./printAndClear.js";
+import { showCorrectAnswers, showResult } from "./display.js";
 
 const res = await Deno.readTextFile("./flags.json");
 const allFlags = JSON.parse(res);
@@ -9,7 +10,11 @@ export const getNumberOfFlagsToPlay = async () => {
   const answer = await input({
     message: "Enter the number of flags you want:",
     required: true,
-    prefill: 10,
+    default: 10,
+    validate: (string) =>
+      Number(string) <= allFlags.length
+        ? true
+        : `Max limit: ${allFlags.length}`,
   });
   return parseInt(answer);
 };
@@ -26,6 +31,7 @@ const getRandomFlags = (number) => {
 
 const isCorrectAnswer = async (flagDetails) => {
   const correctAnswers = flagDetails.names.map((x) => x.toLowerCase());
+
   const answer = await input({
     message: "Enter the Country's name:",
     required: true,
@@ -34,29 +40,10 @@ const isCorrectAnswer = async (flagDetails) => {
   return correctAnswers.some(
     (correctAnswer) => {
       const ld = levenshteinDistance(correctAnswer, answer);
-      const threshold = Math.round((ld / correctAnswer.length)*100);
-      return threshold <=20;
+      const threshold = Math.round((ld / correctAnswer.length) * 100);
+      return threshold <= 20;
     },
   );
-};
-
-const showResult = (correct, total) => {
-  const accuracy = Math.round((correct / total) * 100);
-
-  console.log("\n══════════════════════");
-  console.log("   🎯  GAME OVER");
-  console.log("══════════════════════\n");
-
-  console.log(`Correct answers : ${correct} / ${total}`);
-  console.log(`Accuracy        : ${accuracy}%\n`);
-
-  if (accuracy >= 80) {
-    console.log("🔥 Excellent! You really know your flags.");
-  } else if (accuracy >= 50) {
-    console.log("👍 Good job! A bit more practice and you’ll ace it.");
-  } else {
-    console.log("💪 Keep going! You’ll improve with practice.");
-  }
 };
 
 export const game = async (numberOfFlags) => {
@@ -69,13 +56,11 @@ export const game = async (numberOfFlags) => {
     await printFlag(flagDetails.flag);
     if (await isCorrectAnswer(flagDetails, randomIndex)) {
       console.log("\n%cCorrect answer", "color: green");
+      showCorrectAnswers(flagDetails.names);
       correctAnswers++;
     } else {
       console.log("\n%cWrong answer", "color: red");
-      console.log(
-        `\nCORRECT ANSWER:- %c${flagDetails.names.join(" or ")}`,
-        "color: yellow",
-      );
+      showCorrectAnswers(flagDetails.names);
     }
     prompt("\nEnter to continue ⏎");
     clearFlag();
