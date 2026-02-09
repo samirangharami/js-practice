@@ -1,4 +1,5 @@
 import { input } from "npm:@inquirer/prompts";
+import { levenshteinDistance } from "jsr:@std/text/levenshtein-distance";
 import { clearFlag, printFlag } from "./printAndClear.js";
 
 const res = await Deno.readTextFile("./flags.json");
@@ -29,7 +30,14 @@ const isCorrectAnswer = async (flagDetails) => {
     message: "Enter the Country's name:",
     required: true,
   });
-  return correctAnswers.includes(answer.toLowerCase());
+
+  return correctAnswers.some(
+    (correctAnswer) => {
+      const ld = levenshteinDistance(correctAnswer, answer);
+      const threshold = Math.round((ld / correctAnswer.length)*100);
+      return threshold <=20;
+    },
+  );
 };
 
 const showResult = (correct, total) => {
