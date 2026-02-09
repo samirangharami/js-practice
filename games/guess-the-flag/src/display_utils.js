@@ -19,3 +19,9 @@ export const showResult = (correct, total) => {
 
 export const showCorrectAnswers = (answers) =>
   console.log(`\nCORRECT ANSWERS:- %c${answers.join(" or ")}`, "color: yellow");
+
+export const displayFeedback = (isCorrect) => {
+  const msg = isCorrect ? "Correct answer" : "Wrong answer";
+  const color = isCorrect ? "green" : "red";
+  console.log(`\n%c${msg}`, `color: ${color}`);
+};

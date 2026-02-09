@@ -1,22 +1,27 @@
 import { input } from "npm:@inquirer/prompts";
 import { levenshteinDistance } from "jsr:@std/text/levenshtein-distance";
 import { clearFlag, printFlag } from "./printAndClear.js";
-import { showCorrectAnswers, showResult } from "./display.js";
+import {
+  displayFeedback,
+  showCorrectAnswers,
+  showResult,
+} from "./display_utils.js";
+import { Score } from "./score.js";
 
 const res = await Deno.readTextFile("./flags.json");
 const allFlags = JSON.parse(res);
 
 export const getNumberOfFlagsToPlay = async () => {
+  const validate = (string) =>
+    Number(string) <= allFlags.length || `Max limit: ${allFlags.length}`;
+
   const answer = await input({
     message: "Enter the number of flags you want:",
     required: true,
     default: 10,
-    validate: (string) =>
-      Number(string) <= allFlags.length
-        ? true
-        : `Max limit: ${allFlags.length}`,
+    validate,
   });
-  return parseInt(answer);
+  return Number(answer);
 };
 
 const getRandomFlags = (number) => {
@@ -31,38 +36,35 @@ const getRandomFlags = (number) => {
 
 const isCorrectAnswer = async (flagDetails) => {
   const correctAnswers = flagDetails.names.map((x) => x.toLowerCase());
-
   const answer = await input({
     message: "Enter the Country's name:",
     required: true,
   });
 
-  return correctAnswers.some(
-    (correctAnswer) => {
-      const ld = levenshteinDistance(correctAnswer, answer);
-      const threshold = Math.round((ld / correctAnswer.length) * 100);
-      return threshold <= 20;
-    },
-  );
+  return correctAnswers.some((correctAnswer) => {
+    const ld = levenshteinDistance(correctAnswer, answer);
+    const threshold = Math.round((ld / correctAnswer.length) * 100);
+    return threshold <= 20;
+  });
+};
+
+const validateAnswer = async (flagDetails, score) => {
+  const isCorrect = await isCorrectAnswer(flagDetails);
+  displayFeedback(isCorrect);
+  score.update(isCorrect);
 };
 
 export const game = async (numberOfFlags) => {
   const flags = getRandomFlags(numberOfFlags);
-  let correctAnswers = 0;
+  const score = new Score();
   for (const flagDetails of flags) {
     console.clear();
     await printFlag(flagDetails.flag);
-    if (await isCorrectAnswer(flagDetails)) {
-      console.log("\n%cCorrect answer", "color: green");
-      showCorrectAnswers(flagDetails.names);
-      correctAnswers++;
-    } else {
-      console.log("\n%cWrong answer", "color: red");
-      showCorrectAnswers(flagDetails.names);
-    }
+    await validateAnswer(flagDetails, score);
+    showCorrectAnswers(flagDetails.names);
     prompt("\nEnter to continue ⏎");
     clearFlag();
   }
   console.clear();
-  showResult(correctAnswers, numberOfFlags);
+  showResult(score.correct, numberOfFlags);
 };
