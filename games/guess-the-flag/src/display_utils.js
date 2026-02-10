@@ -1,4 +1,4 @@
-const log = (content) => console.log(content);
+const log = (content, option = "") => console.log(content, option);
 
 const drawLines = () => log("\n══════════════════════");
 
@@ -25,7 +25,8 @@ export const showAnswers = (answers) =>
 
 export const displayFeedback = (isCorrect) => {
   const feedback = isCorrect
-    ? { msg: "Correct answer", color: "greeen" }
+    ? { msg: "Correct answer", color: "green" }
     : { msg: "Wrong answer", color: "red" };
+
   log(`\n%c${feedback.msg}`, `color: ${feedback.color}`);
 };

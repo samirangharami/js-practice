@@ -1,4 +1,4 @@
-import { input } from "npm:@inquirer/prompts";
+import { input, number } from "npm:@inquirer/prompts";
 import { levenshteinDistance } from "jsr:@std/text/levenshtein-distance";
 import { clearFlag, printFlag } from "./printAndClear.js";
 import { displayFeedback, showAnswers, showResult } from "./display_utils.js";
@@ -8,16 +8,14 @@ const res = await Deno.readTextFile("./flags.json");
 const allFlags = JSON.parse(res);
 
 export const getNumberOfFlagsToPlay = async () => {
-  const validate = (string) =>
-    Number(string) <= allFlags.length || `Max limit: ${allFlags.length}`;
-
-  const answer = await input({
+  const answer = await number({
     message: "Enter the number of flags you want:",
     required: true,
     default: 10,
-    validate,
+    min: 1,
+    max: 197,
   });
-  return Number(answer);
+  return answer;
 };
 
 const getRandomFlags = (number) => {
