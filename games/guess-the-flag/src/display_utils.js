@@ -1,27 +1,31 @@
-export const showResult = (correct, total) => {
-  const accuracy = Math.round((correct / total) * 100);
+const log = (content) => console.log(content);
 
-  console.log("\n══════════════════════");
-  console.log("   🎯  GAME OVER");
-  console.log("══════════════════════\n");
+const drawLines = () => log("\n══════════════════════");
 
-  console.log(`Correct answers : ${correct} / ${total}`);
-  console.log(`Accuracy        : ${accuracy}%\n`);
+export const showResult = (score) => {
+  const accuracy = score.accuracy();
+
+  drawLines();
+  log("   🎯  GAME OVER");
+  drawLines();
+  log(`Correct answers : ${score.correct} / ${score.totalQuestions()}`);
+  log(`Accuracy        : ${accuracy}%\n`);
 
   if (accuracy >= 80) {
-    console.log("🔥 Excellent! You really know your flags.");
+    log("🔥 Excellent! You really know your flags.");
   } else if (accuracy >= 50) {
-    console.log("👍 Good job! A bit more practice and you’ll ace it.");
+    log("👍 Good job! A bit more practice and you’ll ace it.");
   } else {
-    console.log("💪 Keep going! You’ll improve with practice.");
+    log("💪 Keep going! You’ll improve with practice.");
   }
 };
 
-export const showCorrectAnswers = (answers) =>
-  console.log(`\nCORRECT ANSWERS:- %c${answers.join(" or ")}`, "color: yellow");
+export const showAnswers = (answers) =>
+  log(`\nCORRECT ANSWERS:- %c${answers.join(" or ")}`, "color: yellow");
 
 export const displayFeedback = (isCorrect) => {
-  const msg = isCorrect ? "Correct answer" : "Wrong answer";
-  const color = isCorrect ? "green" : "red";
-  console.log(`\n%c${msg}`, `color: ${color}`);
+  const feedback = isCorrect
+    ? { msg: "Correct answer", color: "greeen" }
+    : { msg: "Wrong answer", color: "red" };
+  log(`\n%c${feedback.msg}`, `color: ${feedback.color}`);
 };

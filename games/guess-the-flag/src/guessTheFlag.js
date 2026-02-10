@@ -1,11 +1,7 @@
 import { input } from "npm:@inquirer/prompts";
 import { levenshteinDistance } from "jsr:@std/text/levenshtein-distance";
 import { clearFlag, printFlag } from "./printAndClear.js";
-import {
-  displayFeedback,
-  showCorrectAnswers,
-  showResult,
-} from "./display_utils.js";
+import { displayFeedback, showAnswers, showResult } from "./display_utils.js";
 import { Score } from "./score.js";
 
 const res = await Deno.readTextFile("./flags.json");
@@ -61,10 +57,10 @@ export const game = async (numberOfFlags) => {
     console.clear();
     await printFlag(flagDetails.flag);
     await validateAnswer(flagDetails, score);
-    showCorrectAnswers(flagDetails.names);
+    showAnswers(flagDetails.names);
     prompt("\nEnter to continue ⏎");
     clearFlag();
   }
   console.clear();
-  showResult(score.correct, numberOfFlags);
+  showResult(score);
 };

@@ -45,7 +45,6 @@
   {
     "flag": "https://flagcdn.com/w320/bb.png",
     "names": [
-      "Barbados",
       "Barbados"
     ]
   },
@@ -73,7 +72,6 @@
   {
     "flag": "https://flagcdn.com/w320/mn.png",
     "names": [
-      "Mongolia",
       "Mongolia"
     ]
   },
@@ -94,7 +92,6 @@
   {
     "flag": "https://flagcdn.com/w320/ua.png",
     "names": [
-      "Ukraine",
       "Ukraine"
     ]
   },
@@ -377,7 +374,6 @@
   {
     "flag": "https://flagcdn.com/w320/ge.png",
     "names": [
-      "Georgia",
       "Georgia"
     ]
   },
@@ -427,7 +423,6 @@
   {
     "flag": "https://flagcdn.com/w320/is.png",
     "names": [
-      "Iceland",
       "Iceland"
     ]
   },
@@ -469,7 +464,6 @@
   {
     "flag": "https://flagcdn.com/w320/nz.png",
     "names": [
-      "New Zealand",
       "New Zealand"
     ]
   },
@@ -483,7 +477,6 @@
   {
     "flag": "https://flagcdn.com/w320/bf.png",
     "names": [
-      "Burkina Faso",
       "Burkina Faso"
     ]
   },
@@ -497,7 +490,6 @@
   {
     "flag": "https://flagcdn.com/w320/gd.png",
     "names": [
-      "Grenada",
       "Grenada"
     ]
   },
@@ -520,7 +512,6 @@
     "names": [
       "saint vincent",
       "st vincent",
-      "Saint Vincent and the Grenadines",
       "Saint Vincent and the Grenadines"
     ]
   },
@@ -761,7 +752,6 @@
   {
     "flag": "https://flagcdn.com/w320/hu.png",
     "names": [
-      "Hungary",
       "Hungary"
     ]
   },
@@ -937,7 +927,6 @@
   {
     "flag": "https://flagcdn.com/w320/ca.png",
     "names": [
-      "Canada",
       "Canada"
     ]
   },
@@ -1058,7 +1047,6 @@
   {
     "flag": "https://flagcdn.com/w320/my.png",
     "names": [
-      "Malaysia",
       "Malaysia"
     ]
   },
@@ -1079,7 +1067,6 @@
   {
     "flag": "https://flagcdn.com/w320/tv.png",
     "names": [
-      "Tuvalu",
       "Tuvalu"
     ]
   },
@@ -1122,7 +1109,6 @@
     "flag": "https://flagcdn.com/w320/ae.png",
     "names": [
       "uae",
-      "United Arab Emirates",
       "United Arab Emirates"
     ]
   },
@@ -1172,7 +1158,6 @@
   {
     "flag": "https://flagcdn.com/w320/do.png",
     "names": [
-      "Dominican Republic",
       "Dominican Republic"
     ]
   },
@@ -1186,7 +1171,6 @@
   {
     "flag": "https://flagcdn.com/w320/jm.png",
     "names": [
-      "Jamaica",
       "Jamaica"
     ]
   },
@@ -1221,14 +1205,12 @@
   {
     "flag": "https://flagcdn.com/w320/me.png",
     "names": [
-      "Montenegro",
       "Montenegro"
     ]
   },
   {
     "flag": "https://flagcdn.com/w320/jp.png",
     "names": [
-      "Japan",
       "Japan"
     ]
   },
@@ -1278,7 +1260,6 @@
     "flag": "https://flagcdn.com/w320/cg.png",
     "names": [
       "congo",
-      "Republic of the Congo",
       "Republic of the Congo"
     ]
   },
@@ -1315,14 +1296,12 @@
     "flag": "https://flagcdn.com/w320/cf.png",
     "names": [
       "car",
-      "Central African Republic",
       "Central African Republic"
     ]
   },
   {
     "flag": "https://flagcdn.com/w320/ro.png",
     "names": [
-      "Romania",
       "Romania"
     ]
   },
@@ -1393,7 +1372,6 @@
   {
     "flag": "https://flagcdn.com/w320/tm.png",
     "names": [
-      "Turkmenistan",
       "Turkmenistan"
     ]
   }
