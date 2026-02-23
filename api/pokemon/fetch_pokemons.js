@@ -1,10 +1,14 @@
 const extractStats = (pokeDetails) =>
-  pokeDetails.stats.map((x) => `${x.stat.name}: ${x.base_stat}`);
+  pokeDetails
+    .stats
+    .filter((x) => ["attack", "hp", "defense", "speed"].includes(x.stat.name))
+    .reduce((allStats, x) => {
+      allStats[x.stat.name] = x.base_stat;
+      return allStats;
+    }, {});
 
 const getSummary = (pokeDetails) => {
-  const id = pokeDetails.id;
-  const name = pokeDetails.name;
-  const weight = pokeDetails.weight;
+  const { id, name, weight } = pokeDetails;
   const types = pokeDetails.types.map((x) => x.type.name);
   const base_xp = pokeDetails.base_experience;
   const stats = extractStats(pokeDetails);
@@ -21,11 +25,11 @@ const fetchPokemon = async (pokeId) => {
 };
 
 const fetchPokes = async () => {
-  const pokemons = {};
+  const pokemons = [];
 
   for (let id = 1; id <= 1025; id++) {
     const poke = await fetchPokemon(id);
-    pokemons[poke.name] = poke;
+    pokemons.push(poke);
   }
   return pokemons;
 };
