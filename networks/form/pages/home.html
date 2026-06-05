@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Sign up</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    main {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    main>div {
+      border: 2.5px double black;
+      border-radius: 8px;
+      background-color: beige;
+      width: 18%;
+      padding: 3em;
+    }
+
+    .field {
+      display: flex;
+      width: 90%;
+      justify-content: space-between;
+      margin-top: 2em;
+    }
+
+    button {
+      margin-top: 2em;
+      width: 35%;
+      height: 5vh;
+      border-radius: 15px;
+      border: 2px solid #777;
+      background-color: hsl(165deg 34.32% 36.1% / 82%);
+      color: #000000;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div>
+      <h2>Broken Bank Ltd.</h2>
+      <form action="/validate" method="post">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="" placeholder="ex. Javed Ali" required>
+        </div>
+        <div class="field">
+          <label for="contact-number">Contact Number</label>
+          <input type="number" name="contact-number" id="" placeholder="ex. 9214124574" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="" placeholder="ex. javedali@gmail.com" required>
+        </div>
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="" placeholder="ex. javed_ali" minlength="7" maxlength="12" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="" placeholder="******" minlength="7" required>
+        </div>
+        <button type="submit">Sign up</button>
+      </form>
+    </div>
+  </main>
+</body>
+
+</html>
